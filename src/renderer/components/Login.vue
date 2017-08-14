@@ -31,21 +31,27 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
 
 export default {
-  data () {
-    return {
-      user: {
-        username: '',
-        password: ''
-      }
+    data() {
+        return {
+            user: {
+                username: '',
+                password: ''
+            }
+        }
+    },
+    methods: {
+        login() {
+            this.$store.dispatch('login', {
+                user: this.user
+            }).then(() => {
+                this.$router.push('Dashborad')
+            })
+        }
+        // ...mapActions([
+        //   'login'
+        // ])
     }
-  },
-  methods: {
-    ...mapActions([
-      'login'
-    ])
-  }
 }
 </script>

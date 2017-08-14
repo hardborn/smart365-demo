@@ -36,7 +36,6 @@
 
 <script>
   import Login from './Login'
-  import SystemInformation from './LandingPage/SystemInformation'
   import Customers from './CustomerView'
   import {AMapManager} from 'vue-amap'
   import {mapState} from 'vuex'

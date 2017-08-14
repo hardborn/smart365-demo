@@ -8,7 +8,12 @@ export default new Router({
     {
       path: '/',
       name: 'landing-page',
-      component: require('@/components/LandingView')
+      component: require('@/views/LoginView')
+    },
+    {
+      path: '/dashborad/:user',
+      name: 'dashborad',
+      component: require('@/views/DashboradView')
     },
     {
       path: '*',

@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "element-ui": "^1.4.0",
     "vue": "^2.3.3",
     "vue-amap": "^0.2.8",
     "vue-electron": "^1.0.6",

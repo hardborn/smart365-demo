@@ -1,6 +1,6 @@
 <template lang="html">
-  <div class="">
-    <div class="client">
+  <div>
+    <div>
       <ul>
         <li v-for="customer in customers">
           <input type="button" v-bind:value="customer.customerName" name="Login"></input>
