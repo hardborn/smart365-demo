@@ -42,8 +42,7 @@
   export default {
     components: {
       Login,
-      Customers,
-      SystemInformation
+      Customers
     },
     data () {
       let self = this

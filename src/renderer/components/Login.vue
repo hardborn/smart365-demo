@@ -33,25 +33,25 @@
 <script>
 
 export default {
-    data() {
-        return {
-            user: {
-                username: '',
-                password: ''
-            }
-        }
-    },
-    methods: {
-        login() {
-            this.$store.dispatch('login', {
-                user: this.user
-            }).then(() => {
-                this.$router.push('Dashborad')
-            })
-        }
+  data () {
+    return {
+      user: {
+        username: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    login () {
+      this.$store.dispatch('login', {
+        user: this.user
+      }).then(() => {
+        this.$router.push('Dashborad')
+      })
+    }
         // ...mapActions([
         //   'login'
         // ])
-    }
+  }
 }
 </script>
