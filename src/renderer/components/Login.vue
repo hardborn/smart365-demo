@@ -8,7 +8,7 @@
                     <label for="username" class="uname" data-icon="u" > Your email or username </label>
                     <input id="username" name="username" v-model="user.username"  required="required" type="text" placeholder="user name"/>
                 </p>
-                <p>
+                <p  >
                     <label for="password" class="youpasswd" data-icon="p"> Your password </label>
                     <input id="password" name="password" v-model="user.password" requireq="required" type="password" placeholder="password" />
                 </p>
