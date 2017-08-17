@@ -69,6 +69,11 @@ function startRenderer () {
              target:'http://www.sitech365.com',
              pathRewrite:{'^/api':'/'},
              changeOrigin: true
+          },
+          '/test':{
+             target:'http://a.amap.com',
+             pathRewrite:{'^/test':'/'},
+             changeOrigin: true
           }
         },
         setup (app, ctx) {

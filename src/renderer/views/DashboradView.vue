@@ -17,7 +17,7 @@
   
     <div class="content">
       <div class="map-wrapper">
-        <el-amap vid="amapDemo" :map-manager="amapManager" :plugin="plugin" :zoom="zoom" :center="center" :mapStyle="mapStyle">
+        <el-amap vid="amapDemo" :map-manager="amapManager" :plugin="plugin" :zoom="zoom" :events="events" :center="center" :mapStyle="mapStyle">
           <el-amap-marker v-for="marker in markers" :position="marker.position" :title="marker.title"></el-amap-marker>
         </el-amap>
         </div>
@@ -27,29 +27,37 @@
 </template>
 
 <script>
+
 import { mapState } from 'vuex'
+
 import { AMapManager } from 'vue-amap'
+
 export default {
-  created () {
-    this.fetchData()
-  },
   data () {
     console.log(this)
     let my = this
     return {
       amapManager: new AMapManager(),
       zoom: 12,
+      zooms: [5, 18],
       center: [108.922384, 34.318653],
+      map: null,
       mapStyle: 'dark',
       toolBar: null,
+      events: {
+        init (map) {
+          console.log(map)
+          my.map = map
+        }
+      },
       plugin: [{
         pName: 'Geolocation',
         events: {
           init (o) {
             o.getCurrentPosition((status, result) => {
               if (result && result.position) {
-                self.center = [result.position.lng, result.position.lat]
-                self.$nextTick()
+                my.center = [result.position.lng, result.position.lat]
+                my.$nextTick()
                 // console.log(self.center)
               }
             })
@@ -72,7 +80,7 @@ export default {
       this.$store.dispatch('getCustomers')
     },
     add () {
-      let o = this.amapManager.getMap()
+      let o = this.map
       let marker = new AMap.Marker({
         position: [121.59996, 31.177646]
       })
@@ -96,7 +104,7 @@ export default {
               // citycode = cityinfo.replace("市", "");
               // console.log("您当前所在城市：" + cityinfo + ",code:"+ cityinfo.replace("市",""));
               // console.log(cityinfo)
-              self.amapManager.getMap().setBounds(citybounds)
+              self.map.setBounds(citybounds)
             }
           } else {
             console.log('您当前所在城市：' + result.info)
@@ -105,10 +113,77 @@ export default {
       })
     },
     location () {
-      console.log(this.toolBar)
-      this.toolBar.doLocation()
+      let myMap = this.map
+      let self = this
+      console.log(myMap)
+      // this.amapManager.getMap().setFitView()
+      AMapUI.loadUI(['geo/DistrictCluster'], function (DistrictCluster) {
+        // window.DistrictCluster = DistrictCluster
+        // 启动页面
+        self.$store.dispatch('getDistCluster')
+        var distCluster = new DistrictCluster({
+          map: myMap, // 所属的地图实例
+          topAdcodes: [610000],
+          getPosition: function (item) {
+            if (!item) {
+              return null
+            }
+
+            // var parts = item
+
+            // 返回经纬度
+            return [parseFloat(item.longitude), parseFloat(item.latitude)]
+          }
+        })
+        distCluster.setData(self.$store.state.Customer.customers)
+
+        // window.distCluster = distCluster
+
+        // $('<div id="loadingTip">加载数据，请稍候...</div>').appendTo(document.body)
+        // $.get('http://a.amap.com/amap-ui/static/data/10w.txt', function (csv) {
+        //   $('#loadingTip').remove()
+        //   var data = csv.split('\n')
+        //   distCluster.setData(data)
+        // })
+      })
     }
   },
+  // initPage (DistrictCluster, $) {
+  //   let self = this
+  //   var distCluster = new DistrictCluster({
+  //     map: self.amapManager.getMap(), // 所属的地图实例
+  //     getPosition: function (item) {
+  //       if (!item) {
+  //         return null
+  //       }
+
+  //       var parts = item.split(',')
+
+  //       // 返回经纬度
+  //       return [parseFloat(parts[0]), parseFloat(parts[1])]
+  //     }
+  //   })
+
+  //  // window.distCluster = distCluster
+
+  //   $('<div id="loadingTip">加载数据，请稍候...</div>').appendTo(document.body)
+  //   $.get('http://a.amap.com/amap-ui/static/data/10w.txt', function (csv) {
+  //     $('#loadingTip').remove()
+  //     var data = csv.split('\n')
+  //     distCluster.setData(data)
+  //   })
+  // },
+  created () {
+    this.fetchData()
+  },
+  // mounted () {
+  //   lazyAMapApiLoaderInstance.load().then(() => {
+  //         // console.log('-----')
+  //         // this.map = new AMap.Map('amap-demo1', {
+  //         //   center: [121.59996, 31.197646],
+  //         //   zoom: 12
+  //   })
+  // },
   computed: mapState({
     customers: state => state.Customer.customers,
     markers (state) {
@@ -123,7 +198,6 @@ export default {
       })
     }
   })
-
 }
 </script>
 <style scoped>

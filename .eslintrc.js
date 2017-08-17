@@ -11,7 +11,8 @@ module.exports = {
   extends: 'standard',
   globals: {
     __static: true,
-    "AMap":false
+    "AMap":false,
+    "AMapUI":false
   },
   plugins: [
     'html'

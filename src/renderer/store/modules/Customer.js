@@ -14,7 +14,7 @@ const actions = {
   }) {
     axios.get('/api/customer/list.json')
       .then(function (response) {
-        // console.log(response.data)
+        console.log(response.data)
         commit('GET_CUSTOMERS', {customers: response.data})
       })
       .catch(function (error) {
